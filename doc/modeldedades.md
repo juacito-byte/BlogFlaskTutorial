@@ -2,6 +2,7 @@
 
 # Model entitat relacio E/r
 
+```mermaid
 erDiagram
     User ||--o{ ORDER : id
     User {
@@ -13,3 +14,4 @@ erDiagram
         string title
         string body
     }
+    ```
