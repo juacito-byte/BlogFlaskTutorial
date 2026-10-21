@@ -14,4 +14,4 @@ erDiagram
         string title
         string body
     }
-    ```
+```
