@@ -4,12 +4,12 @@
 
 ```mermaid
 erDiagram
-    User ||--o{ ORDER : id
+    User ||--o{ Post : id
     User {
         string username
         string password
     }
-    ORDER {
+    Post {
         date created
         string title
         string body
