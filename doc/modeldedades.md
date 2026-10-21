@@ -15,3 +15,8 @@ erDiagram
         string body
     }
 ```
+
+| Color | Código |
+| ----------- | ----------- |
+| Rojo | #FF0000 |
+| Azul | #0000FF |
