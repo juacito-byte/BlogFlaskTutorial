@@ -30,3 +30,4 @@ erDiagram
 | /<int:id>/update | GET |         |
 | /<int:id>/update | POST |         |
 | /<int:id>/delete | POST |         |
+| /static/<path:filename> | GET |         |
