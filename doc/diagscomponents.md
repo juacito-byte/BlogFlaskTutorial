@@ -59,3 +59,62 @@ classDiagram
   Init  --> auth 
   Init --> blog 
 ```
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Usuari as Usuari / Terminal
+    participant CLI as CLI de Flask
+    participant App as Aplicació Flask<br/>(create_app)
+    participant DBModule as Mòdul de Base de Dades<br/>(db.py)
+    participant SQLite as SQLite3 / Fitxer<br/>(flaskr.sqlite)
+
+    Note over Usuari, SQLite: Execució de la comanda d'inicialització de la base de dades
+
+    Usuari->>CLI: Executa: $ flask --app flaskr init-db
+    
+    activate CLI
+    CLI->>App: Carrega i crida la factoria create_app()
+    activate App
+    
+    Note over App, DBModule: Durant la creació de l'aplicació s'registra el mòdul DB
+    App->>DBModule: init_app(app)
+    activate DBModule
+    DBModule->>App: Registra la comanda CLI 'init-db'<br/>(via app.cli.command)
+    deactivate DBModule
+    
+    App-->>CLI: Retorna instància de l'aplicació configurada
+    deactivate App
+
+    CLI->>CLI: Cerca i localitza la comanda 'init-db' dins del context
+    CLI->>App: Crea un Context d'Aplicació (Application Context)
+    activate App
+
+    CLI->>DBModule: Executa la funció associada: init_db_command()
+    activate DBModule
+
+    DBModule->>DBModule: Crida a init_db()
+    
+    DBModule->>App: Accedeix a current_app per llegir la ruta de la BD<br/>(app.config['DATABASE'])
+    
+    DBModule->>DBModule: Crida a get_db() per establir connexió
+    DBModule->>SQLite: sqlite3.connect(database_path)
+    activate SQLite
+    SQLite-->>DBModule: Retorna l'objecte connexió (amb sqlite3.Row)
+    deactivate SQLite
+
+    DBModule->>App: open_resource('schema.sql')
+    App-->>DBModule: Obre i llegeix el fitxer SQL d'esquema
+
+    DBModule->>SQLite: db.executescript(schema_sql)
+    activate SQLite
+    Note over SQLite: Crea les taules 'user' i 'post'<br/>a la carpeta 'instance/'
+    SQLite-->>DBModule: Execució completada (amb commit implícit)
+    deactivate SQLite
+
+    DBModule->>CLI: click.echo('Initialized the database.')
+    deactivate DBModule
+
+    CLI-->>Usuari: Mostra per pantalla: "Initialized the database."
+    deactivate CLI
+```
