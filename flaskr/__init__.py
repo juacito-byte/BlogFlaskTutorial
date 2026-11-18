@@ -12,7 +12,7 @@ def create_app(test_config=None):
         # store the database in the instance folder
         DATABASE=os.path.join(app.instance_path, "flaskr.sqlite"),
     )
-
+    print("Carrega i crida la factoria create_app()")
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile("config.py", silent=True)
@@ -31,7 +31,7 @@ def create_app(test_config=None):
     from . import db
 
     db.init_app(app)
-
+    print("Durant la creació de l'aplicació s'registra el mòdul DB")
     # apply the blueprints to the app
     from . import auth
     from . import blog
